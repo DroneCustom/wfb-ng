@@ -125,7 +125,7 @@ GS setup successfully finished
 ```
 wfb-cli gs
 ```
-
+```
 
 **Failing to get connection?**
 
