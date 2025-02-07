@@ -27,6 +27,19 @@ and follow the [Setup HowTo](https://github.com/svpcom/wfb-ng/wiki/Setup-HOWTO)
 wfb-cli gs
 ```
 
+### Установка AU
+```
+git clone -b v5.2.20 https://github.com/svpcom/rtl8812au.git
+cd rtl8812au
+make
+sudo ./dkms-install.sh
+sudo depmod -a
+sudo modprobe 88XXau_wfb
+sudo reboot
+
+ethtool -i wlx*
+```
+
 ### Quick start using Debian or Ubuntu Ground Station
 
 - Install patched `RTL8812AU` or `RTL8812EU` driver:
