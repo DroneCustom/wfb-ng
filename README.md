@@ -1,27 +1,5 @@
-![WFB-ng](doc/logo-big.png)
+![WFB-ng](doc/images.jpeg)
 
-This is the next generation of long-range **packet** radio link based on **raw WiFi radio**
-
-Main features:
---------------
- - **1:1 map of RTP to IEEE80211 packets for minimum latency** (doesn't serialize to byte stream)
- - **Smart FEC support** (there are many FEC improvements which allow to reduce latency in case of packet loss)
- - [Bidirectional mavlink telemetry](https://github.com/svpcom/wfb-ng/wiki/Setup-HOWTO). You can use it for mavlink up/down and video down link.
- - **IPv4 tunnel for generic usage.** You can transmit ordinary ip packets over WFB link. Note, don't use ip tunnel for high-bandwidth transfers like video or mavlink because it has more overhead than raw udp streams.
- - **Automatic TX diversity** (select TX card based on RX RSSI)
- - **Stream encryption and authentication** ([libsodium](https://download.libsodium.org/doc/))
- - **Distributed operation.** It can gather data from cards on different hosts. So you aren't limited to bandwidth of single USB bus.
- - **Aggregation of mavlink and tunnel packets.** Doesn't send wifi packet for every mavlink or tunnel packet.
- - **Dynamic FEC and radio modulation.** You can change channel capacity/reliability without link interruption.
- - **Full channel state logging including mavlink parser.** You can log all telemetry and link state for future offline debug.
- - **Support for traffic shaper**. You can use standard linux traffic shapers to priority different channels and/or data/fec packets.
- - Enhanced [OSD](https://github.com/svpcom/wfb-ng-osd) for Raspberry PI (consume 10% CPU on PI Zero) or any other system which
-   supports gstreamer and OpenGL (Linux X11/Wayland, etc). Compatible with any screen resolution.
- - Supported CPU architectues: **arm32v7, arm64v8, amd64, mips64le, s390x, ppc64le, i386**. I.e. any linux with kernel >= 4.x and usb port.
-
-> :warning: **Warranty/Disclaimer** <br />
-> This is free software and comes with no warranty, as stated in parts 15 and 16 of the GPLv3 license. The creators and contributors of the software are not responsible for how it is used.
-> See [License and Support](https://github.com/svpcom/wfb-ng/wiki/License-and-Support) for details.
 
 
 ## Support project
@@ -51,33 +29,9 @@ For detailed instructions on how to get started read through
 [PX4-Guide](https://docs.px4.io/main/en/companion_computer/video_streaming_wfb_ng_wifi.html)
 and follow the [Setup HowTo](https://github.com/svpcom/wfb-ng/wiki/Setup-HOWTO)
 
-### Quick start using Raspberry Pi
 
-- Under [Releases](https://github.com/svpcom/wfb-ng/releases) download the latest image file (`*.img.gz`).
-- Unpack the `*.img` file and flash it to 2-SD Cards.
-- Plug the WiFi Adapters into the Raspberry Pis
-- Boot the Pis and ssh into them using the following command (replace `192.168.0.111` with their IP-Address). Password: `raspberry`
-```
-ssh pi@192.168.0.111
-```
 
-For putty users don't forget to select: `Settings -> Window -> Translation -> Enable VT100 line drawing` checkbox before connect.
 
-- On the Pi used as ground station:
-```
-sudo systemctl enable wifibroadcast@gs
-sudo systemctl enable rtsp
-sudo systemctl enable fpv-video
-sudo systemctl enable osd
-sudo reboot
-```
-
-- On the Pi used on the drone:
-```
-sudo systemctl enable wifibroadcast@drone
-sudo systemctl enable fpv-camera
-sudo reboot
-```
 - Done! You should be able to see the video from the FPV camera. To monitor the link use the following command on the ground station:
 ```
 wfb-cli gs
