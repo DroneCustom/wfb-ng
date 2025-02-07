@@ -7,11 +7,6 @@ See https://github.com/svpcom/wfb-ng/wiki for additional info
 Telegram group: (**wfb-ng support**) https://t.me/wfb_ng
 Please note, that it is only one official group.
 
-## Supported WiFi hardware:
- - **RTL8812au**. (stable) 802.11ac capable. [**Requires external patched driver!**](https://github.com/svpcom/rtl8812au) System was tested with ALPHA AWUS036ACH on both sides in 5GHz mode.
- - **RTL8812eu**. (stable) 802.11ac capable. [**Requires external patched driver!**](https://github.com/svpcom/rtl8812eu) System was tested with [LB-LINK's BL-M8812EU2 module](https://www.lb-link.com/product_36_183.html)
- - **Atheros AR9350**. (beta) 802.11n (2.4GHz and/or 5GHz bands) + LDPC capable. Should work out of box, but requires kernel patches **to control TX power** (by default it will use max power). System was tested with [TP-Link CPE510](https://openwrt.org/toh/tp-link/cpe510), but should work with all similar devices.
-
 
 ## Getting Started
 
@@ -22,9 +17,13 @@ and follow the [Setup HowTo](https://github.com/svpcom/wfb-ng/wiki/Setup-HOWTO)
 
 
 
-- Done! You should be able to see the video from the FPV camera. To monitor the link use the following command on the ground station:
+- Команды для вывода Статистики 
 ```
 wfb-cli gs
+wfb-cli drone
+
+sudo journalctl -xu wifibroadcast@gs
+sudo journalctl -xu wifibroadcast@drone
 ```
 
 ### Установка AU
