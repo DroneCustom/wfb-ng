@@ -72,6 +72,55 @@ wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 2312
 curl -o install_gs.sh https://raw.githubusercontent.com/svpcom/wfb-ng/refs/heads/master/scripts/install_gs.sh
 sudo bash ./install_gs.sh
 ```
+- Если у вас выдает ошибку
+```
+gpg: no valid OpenPGP data found.
+--------------------------------------------------------------------------------
+WFB-ng setup failed
+```
+
+- Скачайте ключ вручную `wget https://apt.wfb-ng.org/public.asc`
+- Добавьте его `sudo gpg --dearmor --yes -o /usr/share/keyrings/wfb-ng.gpg public.asc`
+- Удалите `sudo rm public.asc`
+- Установить `sudo bash ./install_gs.sh`
+
+  ```
+  WFB-ng: http://wfb-ng.org
+Setup HOWTO: https://github.com/svpcom/wfb-ng/wiki/Setup-HOWTO
+Community chat: (wfb-ng support) https://t.me/wfb_ng
+
+Version: master
+
+Quickstart (x86 laptop):
+1. Run "wfb-cli gs" to monitor link state
+2. Run QGroundControl
+
+Quickstart (SBC + RTP video):
+1. Run "wfb-cli gs" to monitor link state
+2. Edit /etc/wifibroadcast.cfg and in section [gs_video] set peer to ip address of your laptop with QGC
+3. Edit /etc/wifibroadcast.cfg and in section [gs_mavlink] set peer to ip address of your laptop with QGC
+4. Reboot SBC.
+5. Run QGroundControl on your laptop
+
+Quickstart (SBC + RTSP video):
+1. Run "wfb-cli gs" to monitor link state
+2. Run "sudo systemctl enable rtsp@h264" or "sudo systemctl enable rtsp@h265" (according to your video codec)
+3. Edit /etc/wifibroadcast.cfg and in section [gs_mavlink] set peer to ip address of your laptop with QGC
+4. Reboot SBC.
+5. Run QGroundControl on your laptop. Set video QGC source to rtsp://x.x.x.x:8554/wfb , where x.x.x.x is GS IP address.
+6. (optional) Run any other RTSP video player(s) for rtsp://x.x.x.x:8554/wfb
+
+To set TX power edit /etc/modprobe.d/wfb.conf and reboot.
+
+In case of any failures check "sudo systemctl status wifibroadcast@gs" service status.
+See full logs via: "sudo journalctl -xu wifibroadcast@gs"
+
+--------------------------------------------------------------------------------
+GS setup successfully finished
+
+  ```
+
+
 - Done! To monitor the link use the following command on the ground station:
 ```
 wfb-cli gs
