@@ -1,12 +1,5 @@
 ![WFB-ng](doc/images.jpeg)
 
-
-
-## Support project
-If you like WFB-ng you can support author via:
-- https://boosty.to/svpcom/donate
-- `bitcoin:bc1qfvlsvr0ea7tzzydngq5cflf4yypemlacgt6t05`
-
 ## Wiki:
 See https://github.com/svpcom/wfb-ng/wiki for additional info
 
@@ -19,9 +12,6 @@ Please note, that it is only one official group.
  - **RTL8812eu**. (stable) 802.11ac capable. [**Requires external patched driver!**](https://github.com/svpcom/rtl8812eu) System was tested with [LB-LINK's BL-M8812EU2 module](https://www.lb-link.com/product_36_183.html)
  - **Atheros AR9350**. (beta) 802.11n (2.4GHz and/or 5GHz bands) + LDPC capable. Should work out of box, but requires kernel patches **to control TX power** (by default it will use max power). System was tested with [TP-Link CPE510](https://openwrt.org/toh/tp-link/cpe510), but should work with all similar devices.
 
-##### NOTE:
-- For Atheros SoC you need to use [cluster mode (beta)](https://github.com/svpcom/wfb-ng/wiki/Distributed-operation) due to CPU, Flash and RAM limits.
-- If you want only RX then in theory any card with monitoring mode will be suitable. For example you can try your OpenWRT-enabled router.
 
 ## Getting Started
 
