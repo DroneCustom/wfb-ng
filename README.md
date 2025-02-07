@@ -39,7 +39,7 @@ sudo reboot
 ethtool -i wlx*
 ```
 
-### Quick start using Debian or Ubuntu Ground Station
+### Установка GS
 
 - Install patched `RTL8812AU` or `RTL8812EU` driver:
 ```
