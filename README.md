@@ -26,7 +26,7 @@ sudo journalctl -xu wifibroadcast@gs
 sudo journalctl -xu wifibroadcast@drone
 ```
 
-### Установка AU
+### Установка Драйверов
 ```
 git clone -b v5.2.20 https://github.com/svpcom/rtl8812au.git
 cd rtl8812au
@@ -36,7 +36,18 @@ sudo depmod -a
 sudo modprobe 88XXau_wfb
 sudo reboot
 
-ethtool -i wlx*
+ethtool -i wlx* Проверка драйвера
+
+driver: rtl88xxau_wfb  ---- Нужный драйвер
+version: 6.1.0-1025-rockchip
+firmware-version: 
+expansion-rom-version: 
+bus-info: 1-1:1.0
+supports-statistics: no
+supports-test: no
+supports-eeprom-access: no
+supports-register-dump: no
+
 ```
 
 ### Установка GS
