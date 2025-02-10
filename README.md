@@ -54,15 +54,7 @@ supports-register-dump: no
 
 - Install patched `RTL8812AU` or `RTL8812EU` driver:
 ```
-sudo apt-get install dkms
-# For 8812au:
-git clone -b v5.2.20 https://github.com/svpcom/rtl8812au.git
-cd rtl8812au/
-# For 8812eu:
-git clone -b v5.15.0.1 https://github.com/svpcom/rtl8812eu.git
-cd rtl8812eu/
-# For both:
-sudo ./dkms-install.sh
+См шаги установки драйвера
 ```
 - Get the name of the WiFi card by running:
 ```
