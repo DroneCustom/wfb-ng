@@ -8,7 +8,7 @@ sudo journalctl -xu wifibroadcast@gs
 sudo journalctl -xu wifibroadcast@drone
 ```
 
-### Установка Драйверов
+### Установка Драйверов(RTL8812AU)
 ```
 git clone -b v5.2.20 https://github.com/svpcom/rtl8812au.git
 cd rtl8812au
@@ -18,9 +18,16 @@ sudo depmod -a
 sudo modprobe 88XXau_wfb
 sudo reboot
 
-ethtool -i wlx* Проверка драйвера
+Установка net-tools
 
-driver: rtl88xxau_wfb  <---- Нужный драйвер
+Sudo apt-get install net-tools -y
+
+ethtool -i wlx* Проверка драйвера
+```
+
+- Как должен выглядеть вывод команды
+```
+driver: rtl88xxau_wfb  ---- Нужный драйвер
 version: 6.1.0-1025-rockchip
 firmware-version: 
 expansion-rom-version: 
@@ -29,7 +36,6 @@ supports-statistics: no
 supports-test: no
 supports-eeprom-access: no
 supports-register-dump: no
-
 ```
 ### Установка Воздуха
 - Убедитесь, что у вас есть исходники ядра!
@@ -60,27 +66,26 @@ wifibroadcast@drone.service - WFB profile drone
      Active: inactive (dead)
 ```
 
-### Установка GS
+### Установка GS (1 вариант)
 
-- Приступать строго после установки драйверов
 ```
 См шаги установки драйвера
 ```
-- Get the name of the WiFi card by running:
+- Узнайте название wifi модуля, ибо каждому присвоено свое имя
 ```
 ifconfig
 ```
-- You should see output similar to:
+- Пример вывода 
 ```
-wlan0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 2312
-        ether 0c:91:60:0a:5a:8b  txqueuelen 1000  (Ethernet)
-        RX packets 0  bytes 0 (0.0 B)
+wlx1ca770fb0a16: flags=4099<UP,BROADCAST,MULTICAST>  mtu 2312
+        ether 1c:a7:70:fb:0a:16  txqueuelen 1000  (Ethernet)
+        RX packets 41  bytes 0 (0.0 B)
         RX errors 0  dropped 0  overruns 0  frame 0
         TX packets 0  bytes 0 (0.0 B)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 ```
-- Run `$ ethtool -i wlan0` and ensure that it show right driver: `rtl88xxau_wfb` or `rtl8812eu`
-- Download and run [install_gs.sh](https://raw.githubusercontent.com/svpcom/wfb-ng/refs/heads/master/scripts/install_gs.sh):
+- Пропишите `$ ethtool -i wlx1ca770fb0a16(название карты)` и убедитесь, чт: `rtl88xxau_wfb` or `rtl8812eu`
+- Скачайте [install_gs.sh](https://raw.githubusercontent.com/svpcom/wfb-ng/refs/heads/master/scripts/install_gs.sh):
 ```
 curl -o install_gs.sh https://raw.githubusercontent.com/svpcom/wfb-ng/refs/heads/master/scripts/install_gs.sh
 sudo bash ./install_gs.sh
@@ -96,8 +101,52 @@ WFB-ng setup failed
 - Добавьте его `sudo gpg --dearmor --yes -o /usr/share/keyrings/wfb-ng.gpg public.asc`
 - Удалите `sudo rm public.asc`
 - Установить `sudo bash ./install_gs.sh`
-
   ```
+
+
+
+
+### Установка GS (2 вариант)
+
+```
+См шаги установки драйвера
+```
+- Узнайте название wifi модуля, ибо каждому присвоено свое имя
+```
+ifconfig
+```
+- Пример вывода 
+```
+wlx1ca770fb0a16: flags=4099<UP,BROADCAST,MULTICAST>  mtu 2312
+        ether 1c:a7:70:fb:0a:16  txqueuelen 1000  (Ethernet)
+        RX packets 41  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
+- Пропишите `$ ethtool -i wlx1ca770fb0a16(название карты)` и убедитесь, что: `rtl88xxau_wfb` or `rtl8812eu`
+```
+git clone -b v5.2.20 https://github.com/svpcom/rtl8812au.git
+cd wfb-ng
+sudo ./scripts/install_gs.sh wlx1ca770fb0a16
+```
+```
+curl -o install_gs.sh https://raw.githubusercontent.com/svpcom/wfb-ng/refs/heads/master/scripts/install_gs.sh
+sudo bash ./install_gs.sh
+```
+- Проверка установки 
+```
+sudo systemctl status wifibroadcast@gs
+```
+
+- Пример вывода
+```
+○ wifibroadcast@gs.service - WFB-ng standalone server, profile gs
+     Loaded: loaded (/usr/lib/systemd/system/wifibroadcast@.service; enabled; preset: enabled)
+     Active: inactive (dead)
+```
+
+  
   WFB-ng: http://wfb-ng.org
 Setup HOWTO: https://github.com/svpcom/wfb-ng/wiki/Setup-HOWTO
 Community chat: (wfb-ng support) https://t.me/wfb_ng
