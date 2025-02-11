@@ -90,21 +90,6 @@ wlx1ca770fb0a16: flags=4099<UP,BROADCAST,MULTICAST>  mtu 2312
 curl -o install_gs.sh https://raw.githubusercontent.com/svpcom/wfb-ng/refs/heads/master/scripts/install_gs.sh
 sudo bash ./install_gs.sh
 ```
-- Если у вас выдает ошибку
-```
-gpg: no valid OpenPGP data found.
---------------------------------------------------------------------------------
-WFB-ng setup failed
-```
-
-- Скачайте ключ вручную `wget https://apt.wfb-ng.org/public.asc`
-- Добавьте его `sudo gpg --dearmor --yes -o /usr/share/keyrings/wfb-ng.gpg public.asc`
-- Удалите `sudo rm public.asc`
-- Установить `sudo bash ./install_gs.sh`
-  ```
-
-
-
 
 ### Установка GS (2 вариант)
 
