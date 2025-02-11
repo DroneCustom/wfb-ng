@@ -1,4 +1,4 @@
-![WFB-ng](doc/images.jpeg)
+##![WFB-ng](doc/images.jpeg)
 
 ## Wiki:
 See https://github.com/svpcom/wfb-ng/wiki for additional info
