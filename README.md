@@ -90,6 +90,16 @@ wlx1ca770fb0a16: flags=4099<UP,BROADCAST,MULTICAST>  mtu 2312
 curl -o install_gs.sh https://raw.githubusercontent.com/svpcom/wfb-ng/refs/heads/master/scripts/install_gs.sh
 sudo bash ./install_gs.sh
 ```
+- Если у вас выдает ошибку
+```
+gpg: no valid OpenPGP data found.
+--------------------------------------------------------------------------------
+WFB-ng setup failed
+```
+- Скачайте ключ вручную `wget https://apt.wfb-ng.org/public.asc`
+- Добавьте его `sudo gpg --dearmor --yes -o /usr/share/keyrings/wfb-ng.gpg public.asc`
+- Удалите `sudo rm public.asc`
+- Установить `sudo bash ./install_gs.sh`
 
 ### Установка GS (2 вариант)
 
@@ -115,10 +125,6 @@ git clone -b v5.2.20 https://github.com/svpcom/rtl8812au.git
 cd wfb-ng
 sudo ./scripts/install_gs.sh wlx1ca770fb0a16
 ```
-```
-curl -o install_gs.sh https://raw.githubusercontent.com/svpcom/wfb-ng/refs/heads/master/scripts/install_gs.sh
-sudo bash ./install_gs.sh
-```
 - Проверка установки 
 ```
 sudo systemctl status wifibroadcast@gs
@@ -130,7 +136,90 @@ sudo systemctl status wifibroadcast@gs
      Loaded: loaded (/usr/lib/systemd/system/wifibroadcast@.service; enabled; preset: enabled)
      Active: inactive (dead)
 ```
+##Работа с конфигами
 
+1. На обоих юнитах | RTL8812AU
+     ```
+     sudo nano /etc/modprobe.d/wfb.conf
+
+     # blacklist stock module
+     blacklist 88XXau
+     blacklist 8812au
+     blacklist 8812
+     options cfg80211 ieee80211_regdom=RU
+     # maximize output power by default
+     options 88XXau_wfb rtw_tx_pwr_idx_override=-10
+     ```
+2. Создайте ключи и переместите их в /etc
+     ```
+     cd wfb-ng
+     wfb_keygen
+
+     sudo mv drone/gs.key /etc
+
+     sudo scp filename.key name@192.168.68.###:/etc
+     ```
+3. Добавьте net.core.bpf_jit_enable = 1 в /etc/sysctl.conf
+     ```
+     sudo nano /etc/sysctl.conf
+
+     net.core.bpf_jit_enable = 1
+
+     sudo sysctl -p
+     ```
+4. Настройка конфига для Земли
+     ```
+     sudo nano /etc/wifibroadcast.cfg
+
+     [common]
+     wifi_channel = 165     # 165 -- radio channel @5825 MHz, range: 5815–5835 MHz, width 20MHz
+                       # 1 -- radio channel @2412 Mhz,
+                       # see https://en.wikipedia.org/wiki/List_of_WLAN_channels for reference
+     wifi_region = 'BO'     # Your country for CRDA (use BO or GY if you want max tx power)
+
+     [gs_mavlink]
+     peer = 'connect://127.0.0.1:14550'  # outgoing connection
+     # peer = 'listen://0.0.0.0:14550'   # incoming connection
+
+     [gs_video]
+     peer = 'connect://127.0.0.1:5600'  # outgoing connection for
+                                   # video sink (QGroundControl on GS)
+
+     ```
+5. Настройка конфига для Воздуха
+     ```
+     [drone_mavlink]
+     # use autopilot connected to /dev/ttyUSB0 at 115200 baud:
+     # peer = 'serial:ttyUSB0:115200'
+
+     # Connect to autopilot via malink-router or mavlink-proxy:
+     # peer = 'listen://0.0.0.0:14550'   # incoming connection
+     # peer = 'connect://127.0.0.1:14550'  # outgoing connection
+
+     [drone_video]
+     peer = 'listen://0.0.0.0:5602'  # listen for video stream (gstreamer on drone)
+     ```
+6. Добавьте WFB_NICS="wlx*" в /etc/default/wifibroadcast
+     ```
+     sudo nano /etc/default/wifibroadcast
+
+     WFB_NICS="wlx*" <-- заменить на название карты
+     ```
+7. Добавьте unmanaged-devices=interface-name:wlx* в /etc/NetworkManager/NetworkManager.conf
+     ```
+     [keyfile]
+     unmanaged-devices=interface-name:wlx*
+     ```
+8. Добавьте denyinterfaces wlx* в /etc/dhcpcd.conf
+     ```
+     denyinterfaces wlx*
+     ```
+9. Отключите Rkfill
+     ```
+     rfkill list all
+     sudo rfkill unblock all
+
+     ```
   
   WFB-ng: http://wfb-ng.org
 Setup HOWTO: https://github.com/svpcom/wfb-ng/wiki/Setup-HOWTO
@@ -206,5 +295,4 @@ Camera --[RTP stream (UDP)]--> wfb_ng --//--[ RADIO ]--//--> wfb_ng --[RTP strea
  ```
  gst-launch-1.0 udpsrc port=5600 caps='application/x-rtp, media=(string)video, clock-rate=(int)90000, encoding-name=(string)H264'            	      !                 rtph264depay ! avdec_h264 ! clockoverlay valignment=bottom ! autovideosink fps-update-interval=1000 sync=false
  ```
-
 
