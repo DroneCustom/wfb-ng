@@ -136,7 +136,7 @@ sudo systemctl status wifibroadcast@gs
      Loaded: loaded (/usr/lib/systemd/system/wifibroadcast@.service; enabled; preset: enabled)
      Active: inactive (dead)
 ```
-###Работа с конфигами
+### Работа с конфигами
 
 1. На обоих юнитах | RTL8812AU
      ```
