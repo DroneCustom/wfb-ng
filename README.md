@@ -47,7 +47,7 @@ ls /usr/lib/$(uname -r)/build
 ```
 sudo apt install python3-all libpcap-dev libsodium-dev python3-pip python3-pyroute2 \
 python3-future python3-twisted python3-serial python3-all-dev iw virtualenv \
-debhelper dh-python build-essential -y
+debhelper dh-python build-essential libgstrtspserver-1.0-dev gstreamer1.0-rtsp -y
 
 git clone -b Stable https://github.com/DroneCustom/wfb-ng.git
 cd wfb-ng
