@@ -49,6 +49,8 @@ sudo apt install python3-all libpcap-dev libsodium-dev python3-pip python3-pyrou
 python3-future python3-twisted python3-serial python3-all-dev iw virtualenv \
 debhelper dh-python build-essential libgstrtspserver-1.0-dev gstreamer1.0-rtsp -y
 
+sudo apt install fakeroot
+
 git clone -b Stable https://github.com/DroneCustom/wfb-ng.git
 cd wfb-ng
 sudo make deb
